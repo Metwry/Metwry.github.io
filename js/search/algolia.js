@@ -106,11 +106,55 @@ window.addEventListener("load", () => {
     searchAsYouType: true,
   });
 
+  // const hits = instantsearch.widgets.hits({
+  //   container: "#algolia-hits",
+  //   templates: {
+  //     item(data) {
+  //       const link = data.permalink ? data.permalink : GLOBAL_CONFIG.root + data.path;
+  //       const result = data._highlightResult;
+  //       const loadingLogo = document.querySelector("#algolia-hits .anzhiyu-spin");
+  //       if (loadingLogo) {
+  //         loadingLogo.style.display = "none";
+  //       }
+  //       setTimeout(() => {
+  //         document.querySelector("#algolia-search .ais-SearchBox-input").focus();
+  //       }, 200);
+  //       return `
+  //         <a href="${link}" class="algolia-hit-item-link">
+  //         <span class="algolia-hits-item-title">${result.title.value || "no-title"}</span>
+  //         </a>`;
+  //     },
+  //     empty: function (data) {
+  //       const loadingLogo = document.querySelector("#algolia-hits .anzhiyu-spin");
+  //       console.info(loadingLogo);
+  //       if (loadingLogo) {
+  //         loadingLogo.style.display = "none";
+  //       }
+  //       setTimeout(() => {
+  //         document.querySelector("#algolia-search .ais-SearchBox-input").focus();
+  //       }, 200);
+  //       return (
+  //         '<div id="algolia-hits-empty">' +
+  //         GLOBAL_CONFIG.algolia.languages.hits_empty.replace(/\$\{query}/, data.query) +
+  //         "</div>"
+  //       );
+  //     },
+  //   },
+  //   cssClasses: {
+  //     item: "algolia-hit-item",
+  //   },
+  // });
   const hits = instantsearch.widgets.hits({
     container: "#algolia-hits",
     templates: {
       item(data) {
-        const link = data.permalink ? data.permalink : GLOBAL_CONFIG.root + data.path;
+        // -----------------------------------------------------------
+        // 修改了这里：
+        // 无论 permalink 是否存在，都强制使用相对路径构建链接。
+        // 这样浏览器会自动根据当前域名（localhost 或 线上域名）进行解析。
+        const link = GLOBAL_CONFIG.root + data.path;
+        // -----------------------------------------------------------
+        
         const result = data._highlightResult;
         const loadingLogo = document.querySelector("#algolia-hits .anzhiyu-spin");
         if (loadingLogo) {
@@ -125,6 +169,7 @@ window.addEventListener("load", () => {
           </a>`;
       },
       empty: function (data) {
+        // ... (保持不变)
         const loadingLogo = document.querySelector("#algolia-hits .anzhiyu-spin");
         console.info(loadingLogo);
         if (loadingLogo) {
