@@ -105,7 +105,7 @@ window.addEventListener("load", () => {
     searchOnEnterKeyPressOnly: false,
     searchAsYouType: true,
   });
-
+  //搜索功能
   const hits = instantsearch.widgets.hits({
     container: "#algolia-hits",
     templates: {
